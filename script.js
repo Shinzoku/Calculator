@@ -40,6 +40,34 @@ function inputDecimal(dot) {
     }
 }
 
+// Function to handle operator input
+function handleOperator(nextOperator) {
+    const { firstOperand, displayValue, operator } = calculator;
+    const inputValue = parseFloat(displayValue);
+
+    // If an operator already exists and waiting for the second operand, update the operator
+    if (operator && calculator.waitingForSecondOperand) {
+        calculator.operator = nextOperator;
+        return;
+    }
+
+    // If the first operand is null, store the current input value as the first operand
+    if (firstOperand == null) {
+        calculator.firstOperand = inputValue;
+    } else if (operator) {
+        // If an operator exists, perform the calculation and store the result
+        const currentValue = firstOperand || 0;
+        const result = performCalculation[operator](currentValue, inputValue);
+
+        calculator.displayValue = String(result);
+        calculator.firstOperand = result;
+    }
+
+    // Set the flag for waiting for the second operand and store the operator
+    calculator.waitingForSecondOperand = true;
+    calculator.operator = nextOperator;
+}
+
 // Function to reset the calculator to its initial state
 function resetCalculator() {
     calculator.displayValue = '0';
