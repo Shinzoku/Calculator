@@ -15,6 +15,31 @@ const performCalculation = {
     '=': (firstOperand, secondOperand) => secondOperand,
 };
 
+// Function to handle digit input
+function inputDigit(digit) {
+    const { displayValue, waitingForSecondOperand } = calculator;
+
+    // If waiting for second operand, replace display value with the digit
+    if (waitingForSecondOperand === true) {
+        calculator.displayValue = digit;
+        calculator.waitingForSecondOperand = false;
+    } else {
+        // If not, append the digit to the display value
+        calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+    }
+}
+
+// Function to handle decimal input
+function inputDecimal(dot) {
+    // If waiting for second operand, do nothing
+    if (calculator.waitingForSecondOperand === true) return;
+
+    // If the display value does not already contain a decimal point, add it
+    if (!calculator.displayValue.includes(dot)) {
+        calculator.displayValue += dot;
+    }
+}
+
 // Function to reset the calculator to its initial state
 function resetCalculator() {
     calculator.displayValue = '0';
